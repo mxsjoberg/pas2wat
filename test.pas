@@ -1,0 +1,4 @@
+PROGRAM test;
+BEGIN
+    WRITELN(42);
+END.

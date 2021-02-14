@@ -1,0 +1,7 @@
+[package]
+name = "pawa"
+version = "0.1.0"
+authors = ["Michael Sjöberg <michael@sjoeberg.co>"]
+edition = "2018"
+
+[dependencies]
