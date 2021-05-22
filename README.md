@@ -1,6 +1,6 @@
-# pawa: pascal-to-wat prototype compiler
+# pas2wat: pascal-to-wat
 
-This is a prototype compiler in Rust for Pascal targeting WebAssembly text-format. Focus is on structure and implementation for demonstration projects, where goal for project is to be adaptable to work with other programming languages.
+This is a prototype compiler in Rust to translate Pascal into WebAssembly (text-format).
 
 ## folder structure and files
 
