@@ -1,9 +1,5 @@
 /*
 
-pawa: pascal-to-wat prototype compiler
-
-----
-
 program                 : PROGRAM variable SEMICOLON block DOT
 
 block                   : declarations compound_statement
