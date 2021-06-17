@@ -4,19 +4,21 @@ This is a work-in-progress compiler (lexer, parser, and code generation) for a s
 
 ## folder structure
 
-- src
-    - main      : [start here](https://github.com/michaelsjoeberg/pas2wat/blob/main/src/main.rs)
-    - config    : configuration file (settings for debugging etc.)
-    - const : constants used in other files (keywords, strings, opcodes, etc.)
-    - type : source code for type used in other files
-    - token : source code for token type used in other files
-    - lexer : source code for lexer
-    - ast : source code for AST data structure (IR)
-    - parser : source code for parser
-    - evaluator : source code for partial evaluator (could also be adapted to use as interpreter)
-    - emitter : source code for code generation
+- src/
+    - main.rs
+        - [start here](https://github.com/michaelsjoeberg/pas2wat/blob/main/src/main.rs)
+    - config.rs : configuration file (settings for debugging etc.)
+    - const.rs : constants used in other files (keywords, strings, opcodes, etc.)
+    - type.rs : source code for type used in other files
+    - token.rs : source code for token type used in other files
+    - lexer.rs : source code for lexer
+    - ast.rs : source code for AST data structure (IR)
+    - parser.rs : source code for parser
+    - evaluator.rs : source code for partial evaluator (could also be adapted to use as interpreter)
+    - emitter.rs : source code for code generation
 
-- programs : various programs to validate compilation process (test cases)
+- programs/
+    - various programs to validate compilation process (use cases)
 
 ## manual
 
