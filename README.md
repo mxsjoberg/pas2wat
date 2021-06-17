@@ -22,7 +22,9 @@ This is a work-in-progress compiler (lexer, parser, and code generation) for a s
 
 First, install both Rust and Cargo, the Rust package manager. If already installed, or after successful installation:
 
-- `cargo run <filename>.pas` in project root folder to run the compiler with `<filename>.pas` as input, output is `<filename>.wat`.
+- `cargo test` to run unit tests
+
+- `cargo run <filename>.pas` to run the compiler with `<filename>.pas` as input, output is `<filename>.wat`.
 
 The generated file is in WebAssembly text-format, which is enough for testing using the [wat2wasm online tool](https://webassembly.github.io/wabt/demo/wat2wasm/).
 
