@@ -5,8 +5,8 @@ This is a work-in-progress compiler (lexer, parser, and code generation) for a s
 ## folder structure
 
 - src
-    - main : [start here](https://github.com/michaelsjoeberg/pas2wat/blob/main/src/main.rs)
-    - config : configuration file (settings for debugging etc.)
+    - main      : [start here](https://github.com/michaelsjoeberg/pas2wat/blob/main/src/main.rs)
+    - config    : configuration file (settings for debugging etc.)
     - const : constants used in other files (keywords, strings, opcodes, etc.)
     - type : source code for type used in other files
     - token : source code for token type used in other files
