@@ -1,6 +1,6 @@
 # pas2wat: pascal-to-wat
 
-This is a work-in-progress compiler (lexer, parser, and code generation) for a subset of Pascal targeting WebAssembly text-format. The end-goal is to build a versatile framework for implementing compilers or interpreters in Rust.
+This is a proof-of-concept compiler in Rust with lexer, parser, partial evaluator, and code generation for a subset of Pascal `.pas` targeting WebAssembly text-format `.wat`.
 
 ## folder structure
 
