@@ -2,6 +2,12 @@
 
 This is a proof-of-concept compiler in Rust with lexer, parser, partial evaluator, and code generation for a subset of Pascal `.pas` targeting WebAssembly text-format `.wat`.
 
+## TODO
+
+- make SEMICOLON optional (no reason to require in input since omitted in webassembly)
+- use func export for procedures (callable within module)
+- see data.wat and data.js for implementing string using memory
+
 ## folder structure
 
 - src/
