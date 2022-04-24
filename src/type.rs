@@ -2,17 +2,17 @@
 
   Types
 
-  INTEGER     : INTEGER(_)
-  LONGINT     : INTEGER(_)
-  REAL        : REAL(_)
+  INTEGER
+  LONGINT
+  SMALLINT
+  REAL
 
   TODO
 
-  SMALLINT    : INTEGER(_)
-  BOOLEAN     : INTEGER(1) | INTEGER(0)
-  STRING      : 
-  CHAR        :
-  BYTE        :
+  BOOLEAN
+  STRING
+  CHAR
+  BYTE
 
 */
 
@@ -20,4 +20,5 @@
 pub enum Type {
   INTEGER,
   REAL,
+  BOOLEAN,
 }
