@@ -15,6 +15,7 @@ pub struct Lexer {
   text: String,
   position: i32,
   current_char: Option<char>,
+  comment_multiline: bool,
 }
 impl Lexer {
   // new : Lexer
@@ -23,6 +24,7 @@ impl Lexer {
       text: text,
       position: 0,
       current_char: None,
+      comment_multiline: false,
     };
     if lexer.text.len() > 0 {
       lexer.current_char = Some(lexer.text.as_bytes()[0] as char);
@@ -67,13 +69,28 @@ impl Lexer {
   }
   // skip_comment
   fn skip_comment(&mut self) {
-    while let Some(_char) = self.current_char {
-      if _char != CHAR_RCUR {
-        self.increment();
-      } else {
-        // closing curly brace
-        self.increment();
-        break;
+    if self.comment_multiline == true {
+      // increment until closing curly
+      while let Some(_char) = self.current_char {
+        if _char != CHAR_RCUR {
+          self.increment();
+        } else {
+          self.comment_multiline = false;
+          // closing curly brace
+          self.increment();
+          break;
+        }
+      }
+    } else {
+      // increment until newline
+      while let Some(_char) = self.current_char {
+        if _char != CHAR_NEWLINE {
+          self.increment();
+        } else {
+          // newline
+          // self.increment();
+          break;
+        }
       }
     }
   }
@@ -150,6 +167,9 @@ impl Lexer {
       KEY_VAR => {
         return Token::VAR;
       },
+      KEY_CONST => {
+        return Token::CONST;
+      },
       KEY_DIV => {
         return Token::INTEGER_DIV;
       },
@@ -172,8 +192,14 @@ impl Lexer {
       KEY_LONGINT => {
         return Token::TYPE_SPEC(Type::INTEGER);
       },
+      KEY_SMALLINT => {
+        return Token::TYPE_SPEC(Type::INTEGER);
+      },
       KEY_REAL => {
         return Token::TYPE_SPEC(Type::REAL);
+      },
+      KEY_BOOLEAN => {
+        return Token::TYPE_SPEC(Type::BOOLEAN);
       },
       // boolean
       KEY_TRUE => {
@@ -226,11 +252,18 @@ impl Lexer {
         self.skip_whitespace();
         continue;
       }
-      // comment
+      // comment multiline
       if _char == CHAR_LCUR {
+        self.comment_multiline = true;
         self.increment();
         self.skip_comment();
         continue;
+      }
+      // comment
+      if _char == CHAR_DIVIDE && self.look_ahead() == Some(CHAR_DIVIDE) {
+        self.increment();
+        self.skip_comment();
+        continue; 
       }
       // identifier (variable or keyword)
       if _char.is_alphabetic() {
@@ -398,6 +431,8 @@ mod tests {
     assert_eq!(lexer.id(), Token::PROGRAM);
     let mut lexer = Lexer::new("VAR".to_string());
     assert_eq!(lexer.id(), Token::VAR);
+    let mut lexer = Lexer::new("CONST".to_string());
+    assert_eq!(lexer.id(), Token::CONST);
     let mut lexer = Lexer::new("DIV".to_string());
     assert_eq!(lexer.id(), Token::INTEGER_DIV);
     let mut lexer = Lexer::new("MOD".to_string());
@@ -410,8 +445,12 @@ mod tests {
     assert_eq!(lexer.id(), Token::TYPE_SPEC(Type::INTEGER));
     let mut lexer = Lexer::new("LONGINT".to_string());
     assert_eq!(lexer.id(), Token::TYPE_SPEC(Type::INTEGER));
+    let mut lexer = Lexer::new("SMALLINT".to_string());
+    assert_eq!(lexer.id(), Token::TYPE_SPEC(Type::INTEGER));
     let mut lexer = Lexer::new("REAL".to_string());
     assert_eq!(lexer.id(), Token::TYPE_SPEC(Type::REAL));
+    let mut lexer = Lexer::new("BOOLEAN".to_string());
+    assert_eq!(lexer.id(), Token::TYPE_SPEC(Type::BOOLEAN));
     let mut lexer = Lexer::new("TRUE".to_string());
     assert_eq!(lexer.id(), Token::TRUE);
     let mut lexer = Lexer::new("FALSE".to_string());
@@ -462,6 +501,11 @@ mod tests {
     assert_eq!(lexer.get_next_token(), Token::ID("third".to_string()));
     assert_eq!(lexer.get_next_token(), Token::COLON);
     assert_eq!(lexer.get_next_token(), Token::TYPE_SPEC(Type::INTEGER));
+    assert_eq!(lexer.get_next_token(), Token::SEMICOLON);
+    let mut lexer = Lexer::new("first: BOOLEAN;".to_string());
+    assert_eq!(lexer.get_next_token(), Token::ID("first".to_string()));
+    assert_eq!(lexer.get_next_token(), Token::COLON);
+    assert_eq!(lexer.get_next_token(), Token::TYPE_SPEC(Type::BOOLEAN));
     assert_eq!(lexer.get_next_token(), Token::SEMICOLON);
   }
   #[test]
