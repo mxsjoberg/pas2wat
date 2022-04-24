@@ -8,6 +8,8 @@ use crate::evaluator::Evaluator;
 
 /*
 
+  TODO: update grammar to be more consistent and make improvements (no semicolon etc)
+
   Subset of Standard Pascal
 
   program                 : PROGRAM variable SEMICOLON block DOT
@@ -18,24 +20,57 @@ use crate::evaluator::Evaluator;
   statement               : compound_statement | structured_statement | assignment_statement | function_statement | empty
   structured_statement    : if_statement | while_statement
 
-  if_statement            : IF expression THEN statement (ELSE statement)?
-  while_statement         : WHILE expression DO statement
-  function_statement      : (WRITELN) LPAR expression RPAR
+  TODO if_statement            : IF condition THEN statement (ELSE statement)?
+  TODO while_statement         : WHILE condition DO statement
+  TODO function_statement      : (WRITELN) LPAR simple_expression RPAR
 
-  declarations            : VAR (variable_declaration SEMICOLON)+ | empty
+  declarations            : CONST (constant_declaration SEMICOLON)+ | VAR (variable_declaration SEMICOLON)+ | empty
   variable_declaration    : ID (COMMA ID)* COLON (type_spec | structured_type)
   structured_type         : (PACKED)? (array_type)
   array_type              : ARRAY LBRA RANGE (COMMA RANGE)* RBRA OF type_spec
-  type_spec               : INTEGER | REAL
+  type_spec               : INTEGER | REAL | BOOLEAN
 
-  assignment_statement    : variable ASSIGN simple_expression
+  assignment_statement    : variable ASSIGN (simple_expression | (TRUE | FALSE))
   variable                : ID (LBRA simple_expression RBRA)?
-
-  expression              : (TRUE | FALSE) | ODD simple_expression | simple_expression ((EQUAL | GREATER_THAN | GREATER_EQUAL | LESS_THAN | LESS_EQUAL | NOT_EQUAL) simple_expression)?
+  
+  TODO condition               : (TRUE | FALSE) | ODD simple_expression | simple_expression (EQUAL | GREATER_THAN | GREATER_EQUAL | LESS_THAN | LESS_EQUAL | NOT_EQUAL) simple_expression
   simple_expression       : term ((PLUS | MINUS) term)*
 
   term                    : factor ((MULTIPLY | DIVIDE | INTEGER_DIV | INTEGER_MOD) factor)*
   factor                  : PLUS factor | MINUS factor | INTEGER | REAL | LPAR expression RPAR | variable
+  empty                   : 
+
+*/
+
+/*
+  
+  program                 : PROGRAM variable SEMICOLON block DOT
+
+  block                   : declarations compound_statement
+
+  declarations            : CONST (constant_declaration SEMICOLON)+ | VAR (variable_declaration SEMICOLON)+ | empty
+
+  constant_declaration    : ID EQUAL (INTEGER | REAL)
+  variable_declaration    : ID (COMMA ID)* COLON type_spec
+
+  compound_statement      : BEGIN statement (SEMICOLON statement)* END
+  statement               : compound_statement | structured_statement | assignment_statement | function_statement | empty
+  structured_statement    : if_statement | while_statement
+  assignment_statement    : variable ASSIGN (simple_expression | (TRUE | FALSE))
+  function_statement      : function LPAR simple_expression RPAR
+  
+  if_statement            : IF condition THEN statement (ELSE statement)?
+  while_statement         : WHILE condition DO statement
+
+  condition               : (TRUE | FALSE) | ODD simple_expression | simple_expression (EQUAL | GREATER_THAN | GREATER_EQUAL | LESS_THAN | LESS_EQUAL | NOT_EQUAL) simple_expression
+  simple_expression       : term ((PLUS | MINUS) term)*
+
+  term                    : factor ((MULTIPLY | DIVIDE | INTEGER_DIV | INTEGER_MOD) factor)*
+  factor                  : PLUS factor | MINUS factor | INTEGER | REAL | LPAR simple_expression RPAR | variable
+
+  type_spec               : INTEGER | REAL
+  variable                : ID
+  function                : WRITELN | [TODO: add more built-in functions]
   empty                   : 
 
 */
@@ -215,6 +250,39 @@ impl Parser {
       _ => panic!(format!("{:?} : {}", token, PANIC_SYNTAX))
     }
   }
+  // constant_declaration : AST
+  // fn constant_declaration(&mut self) -> AST {
+  //   /*
+  //     constant_declaration : ID EQUAL (INTEGER | REAL)
+  //   */
+  //   // ID
+  //   let constant_node = self.variable();
+  //   // EQUAL
+  //   self.eat(Token::EQUAL);
+  //   // (INTEGER | REAL)
+  //   let token = self.current_token.clone().unwrap();
+  //   match token {
+  //     // INTEGER
+  //     Token::INTEGER(_int) => {
+  //       let node = Token::INTEGER(_int);
+  //       // INTEGER
+  //       self.eat(Token::INTEGER(_int));
+  //       self.symbol_table.push((constant_node.token.clone(), Type::INTEGER.clone()));
+  //       // self.result_type = true;
+  //       return AST::new(node, vec![constant_node]);
+  //     },
+  //     // REAL
+  //     Token::REAL(_float) => {
+  //       let node = Token::REAL(_float);
+  //       // INTEGER
+  //       self.eat(Token::REAL(_float));
+  //       self.symbol_table.push((constant_node.token.clone(), Type::REAL.clone()));
+  //       // self.result_type = true;
+  //       return AST::new(node, vec![constant_node]);
+  //     },
+  //     _ => panic!(format!("{:?} : {}", token, PANIC_TYPE_DECLARATION))
+  //   }
+  // }
   // variable_declaration : AST
   fn variable_declaration(&mut self) -> AST {
     /*
@@ -248,10 +316,37 @@ impl Parser {
       _ => panic!(format!("{:?} : {}", token, PANIC_TYPE_DECLARATION))
     }
   }
-  // declarations : AST
-  fn declarations(&mut self) -> AST {
+  // constant_declarations : AST
+  // fn constant_declarations(&mut self) -> AST {
+  //   /*
+  //     constant_declarations : CONST (constant_declaration SEMICOLON)+ | empty
+  //   */
+  //   let token = self.current_token.clone().unwrap();
+  //   match token {
+  //     Token::CONST => {
+  //       let mut constant_declarations = vec![];
+  //       // CONST
+  //       self.eat(Token::CONST);
+  //       // (constant_declaration SEMICOLON)+
+  //       while let Some(_token) = &self.current_token {
+  //         match _token {
+  //           Token::ID(_string) => {
+  //             constant_declarations.push(self.constant_declaration());
+  //             self.eat(Token::SEMICOLON);
+  //           },
+  //           _ => break
+  //         }
+  //       }
+  //       let node = AST::new(Token::CONST, constant_declarations);
+  //       return node
+  //     },
+  //     _ => return self.empty()
+  //   }
+  // }
+  // variable_declarations : AST
+  fn variable_declarations(&mut self) -> AST {
     /*
-      declarations : VAR (variable_declaration SEMICOLON)+ | empty
+      variable_declarations : VAR (variable_declaration SEMICOLON)+ | empty
     */
     let token = self.current_token.clone().unwrap();
     match token {
@@ -259,7 +354,7 @@ impl Parser {
         let mut variable_declarations = vec![];
         // VAR
         self.eat(Token::VAR);
-        // (variable_declaration SEMI)+
+        // (variable_declaration SEMICOLON)+
         while let Some(_token) = &self.current_token {
           match _token {
             Token::ID(_string) => {
@@ -423,6 +518,7 @@ impl Parser {
           node = AST::new(Token::TRUE, vec![]);
         },
         Some(Token::FALSE) => {
+          // FALSE
           self.eat(Token::FALSE);
           node = AST::new(Token::FALSE, vec![]);
         },
@@ -626,9 +722,11 @@ impl Parser {
     /*
       block : declarations compound_statement
     */
-    let declarations_nodes = self.declarations();
+    // let constant_declarations_nodes = self.constant_declarations();
+    let variable_declarations_nodes = self.variable_declarations();
     let compound_statement_nodes = self.compound_statement();
-    let node = AST::new(Token::BLOCK, vec![declarations_nodes, compound_statement_nodes]);
+    // let node = AST::new(Token::BLOCK, vec![constant_declarations_nodes, variable_declarations_nodes, compound_statement_nodes]);
+    let node = AST::new(Token::BLOCK, vec![variable_declarations_nodes, compound_statement_nodes]);
     return node
   }
   // program : AST
