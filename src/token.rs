@@ -11,6 +11,7 @@ pub enum Token {
   REAL(f64),
   RANGE(i32, i32),
   // booleans
+  // BOOLEAN(i32),
   TRUE,
   FALSE,
   // operators
@@ -24,6 +25,7 @@ pub enum Token {
   GREATER_EQUAL,
   LESS_THAN,
   LESS_EQUAL,
+  ODD,
   // expressions
   LPAR,
   RPAR,
@@ -42,6 +44,7 @@ pub enum Token {
   PROGRAM,
   //TYPE,
   VAR,
+  CONST,
   PACKED,
   ARRAY,
   OF,
@@ -52,7 +55,6 @@ pub enum Token {
   EMPTY,
   WHILE,
   DO,
-  ODD,
   //BREAK,
   IF,
   THEN,
