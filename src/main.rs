@@ -73,18 +73,29 @@ fn main() {
       // show result
       if DEBUG && DEBUG_SHOW_RESULT {
         let result = fs::read_to_string(format!("{}{}", file_name[0].to_string(), WASM_WAT)).expect(PANIC_READ);
-        println!("{}{}{}{}START RESULT{}{}", FORMAT_TAB, FORMAT_SPACE.repeat(2), "-".repeat(14), FORMAT_SPACE, FORMAT_SPACE, "-".repeat(14));
+        println!("{}{}START RESULT{}{}", "-".repeat(14), FORMAT_SPACE, FORMAT_SPACE, "-".repeat(14));
         for line in result.lines() {
-          println!("{}{}{}", FORMAT_TAB, FORMAT_SPACE.repeat(2), line);
+          println!("{}", line);
         }
-        println!("{}{}{}{}END RESULT{}{}", FORMAT_TAB, FORMAT_SPACE.repeat(2), "-".repeat(15), FORMAT_SPACE, FORMAT_SPACE, "-".repeat(15));
+        println!("{}{}END RESULT{}{}", "-".repeat(15), FORMAT_SPACE, FORMAT_SPACE, "-".repeat(15));
       }
     } else {
       panic!("{} : {}", PANIC_READ, PANIC_FILE);
     }
   // run parts of compiler using custom input
   } else {
-    let mut lexer = Lexer::new("40 MOD (10 - 8) * -2".to_string());
+    let mut lexer = Lexer::new("
+      PROGRAM test;
+      CONST
+        pi = 3.1415;
+      VAR
+        int: INTEGER;
+      BEGIN
+        IF true THEN
+          WRITELN(pi)
+        ELSE
+          WRITELN(0);
+      END.".to_string());
     let mut token = lexer.get_next_token();
     while token != Token::EOF {
       println!("{}{}{:?}", FORMAT_TAB, FORMAT_SPACE.repeat(2), token);
