@@ -385,6 +385,41 @@ impl Emitter {
       _ => panic!("{} : {:?}", PANIC_COMPILE, node)
     }
   }
+  // visit_constant_declaration
+  // fn visit_constant_declaration(&mut self, node: &AST) {
+  //   for _child in &node.children {
+  //     let token = &_child.token;
+  //     match token {
+  //       Token::INTEGER(_int) => {
+  //         for _id in &_child.children {
+  //           match &_id.token {
+  //             Token::ID(_string) => {
+  //               match self.file.write_all(format!("{}{}({} ${} {})", FORMAT_NEWLINE, FORMAT_TAB.repeat(self.tab_pos as usize), WASM_DECLARATION, _string, NTYPE_REAL).as_bytes()) {
+  //                 Err(why) => panic!("{} : {:?} : {}", PANIC_COMPILE, node, why),
+  //                 Ok(_) => {},
+  //               }
+  //             },
+  //             _ => panic!("{} : {:?}", PANIC_COMPILE, node)
+  //           }
+  //         }
+  //       },
+  //       Token::REAL(_float) => {
+  //         for _id in &_child.children {
+  //           match &_id.token {
+  //             Token::ID(_string) => {
+  //               match self.file.write_all(format!("{}{}({} ${} {})", FORMAT_NEWLINE, FORMAT_TAB.repeat(self.tab_pos as usize), WASM_DECLARATION, _string, NTYPE_REAL).as_bytes()) {
+  //                 Err(why) => panic!("{} : {:?} : {}", PANIC_COMPILE, node, why),
+  //                 Ok(_) => {},
+  //               }
+  //             },
+  //             _ => panic!("{} : {:?}", PANIC_COMPILE, node)
+  //           }
+  //         }
+  //       },
+  //       _ => {}
+  //     }
+  //   }
+  // }
   // visit_variable_declaration
   fn visit_variable_declaration(&mut self, node: &AST) {
     for _child in &node.children {
@@ -446,6 +481,7 @@ impl Emitter {
   }
   // visit_program
   fn visit_program(&mut self, node: &AST) {
+    // if DEBUG && DEBUG_SHOW_TREE { println!("{} {:?} {:?}", FORMAT_TAB.repeat(self.tab_pos as usize + 1), node.token, node.children[0].token); };
     match &node.children[0].token {
       Token::ID(_string) => {
         match self.file.write_all(format!("{}({}{}{}(import \"console\" \"log\" (func $log (param f64))){}{}({}{}{};; signature{}{}({} \"{}\")", FORMAT_NEWLINE, WASM_MODULE, FORMAT_NEWLINE, FORMAT_TAB.repeat(self.tab_pos as usize + 1), FORMAT_NEWLINE, FORMAT_TAB.repeat(self.tab_pos as usize + 1), WASM_FUNCTION, FORMAT_NEWLINE, FORMAT_TAB.repeat(self.tab_pos as usize + 2), FORMAT_NEWLINE, FORMAT_TAB.repeat(self.tab_pos as usize + 2), WASM_EXPORT, _string).as_bytes()) {
@@ -457,14 +493,14 @@ impl Emitter {
             match &node.children[1].children[0].token {
               Token::VAR => {}
               _ => {
-                  // declare result type (if any)
-                  // if self.parser.result_type {
-                  //     //println!("{:?}", self.parser.result_type);
-                  //     match self.file.write_all(format!("{}{}({} {}){}{};; body", FORMAT_NEWLINE, FORMAT_TAB.repeat(self.tab_pos as usize), WASM_RESULT, NTYPE_REAL, FORMAT_NEWLINE, FORMAT_TAB.repeat(self.tab_pos as usize)).as_bytes()) {
-                  //         Err(why) => panic!("{} : {:?} : {}", PANIC_COMPILE, node, why),
-                  //         Ok(_) => {},
-                  //     }
-                  // }
+                // declare result type (if any)
+                // if self.parser.result_type {
+                //     //println!("{:?}", self.parser.result_type);
+                //     match self.file.write_all(format!("{}{}({} {}){}{};; body", FORMAT_NEWLINE, FORMAT_TAB.repeat(self.tab_pos as usize), WASM_RESULT, NTYPE_REAL, FORMAT_NEWLINE, FORMAT_TAB.repeat(self.tab_pos as usize)).as_bytes()) {
+                //         Err(why) => panic!("{} : {:?} : {}", PANIC_COMPILE, node, why),
+                //         Ok(_) => {},
+                //     }
+                // }
               }
             }
             // visit next
@@ -521,6 +557,9 @@ impl Emitter {
         if OUTPUT_VERBOSE { self.file.write_all(format!("{}{};; write", FORMAT_NEWLINE, FORMAT_TAB.repeat(self.tab_pos as usize)).as_bytes()).expect(PANIC_WRITE); };
         self.file.write_all(format!("{}{}({})", FORMAT_NEWLINE, FORMAT_TAB.repeat(self.tab_pos as usize), WASM_WRITE).as_bytes()).expect(PANIC_WRITE);
       },
+      // Token::CONST => {
+      //   self.visit_constant_declaration(node);
+      // },
       Token::VAR => {
         self.visit_variable_declaration(node);
       },
@@ -531,6 +570,7 @@ impl Emitter {
         }
       },
       Token::PROGRAM => {
+        // if DEBUG && DEBUG_SHOW_TREE { println!("{} {:?} {:?}", FORMAT_TAB.repeat(self.tab_pos as usize + 1), node.token, node.children[0].token); };
         self.visit_program(node);
       },
       Token::EMPTY => {
@@ -541,9 +581,8 @@ impl Emitter {
   // compile
   pub fn compile(&mut self) {
     let tree = self.parser.parse();
-    if DEBUG && DEBUG_SHOW_TREE {
-        println!("{:?}", tree);
-    };
+    if DEBUG && DEBUG_SHOW_TREE { println!("{:?}", tree); };
+    // END TEST
     if DEBUG && DEBUG_SHOW_SYMBOL_TABLE { println!("{:?}", self.parser.symbol_table); };
     if DEBUG && DEBUG_SHOW_ASSIGNMENT_TABLE { println!("{:?}", self.parser.assign_table); };
     // write
