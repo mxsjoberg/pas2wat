@@ -1,3 +1,10 @@
+                     ____                _   
+     _ __   __ _ ___|___ \__      ____ _| |_ 
+    | '_ \ / _` / __| __) \ \ /\ / / _` | __|
+    | |_) | (_| \__ \/ __/ \ V  V / (_| | |_ 
+    | .__/ \__,_|___/_____| \_/\_/ \__,_|\__|
+    |_|                                      
+
 # pas2wat: pascal-to-wat
 
 This is a proof-of-concept compiler in Rust with lexer, parser, partial evaluator, and code generation for a subset of Pascal `.pas` targeting WebAssembly text-format `.wat`.
