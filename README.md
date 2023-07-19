@@ -7,7 +7,7 @@
 
 # pas2wat: pascal-to-wat
 
-This is a proof-of-concept compiler in Rust with lexer, parser, partial evaluator, and code generation for a subset of Pascal `.pas` targeting WebAssembly text-format `.wat`.
+This is an experimental Pascal `.pas` to WebAssembly text-format `.wat` translator.
 
 ## TODO
 
