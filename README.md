@@ -42,7 +42,7 @@ This is an experimental Pascal `.pas` to WebAssembly text-format `.wat` translat
         - source code for code generation
 
 - programs/
-    - various programs to validate compilation process (use cases)
+    - Pascal programs for testing
 
 ## manual
 
