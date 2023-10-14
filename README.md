@@ -1,13 +1,10 @@
-                     ____                _   
-     _ __   __ _ ___|___ \__      ____ _| |_ 
-    | '_ \ / _` / __| __) \ \ /\ / / _` | __|
-    | |_) | (_| \__ \/ __/ \ V  V / (_| | |_ 
-    | .__/ \__,_|___/_____| \_/\_/ \__,_|\__|
-    |_|                                      
+![pas2wat.png](pas2wat.png)
 
-# pas2wat: pascal-to-wat
+# pas2wat: Pascal-to-WebAssembly text-format compiler in Rust
 
-This is an experimental Pascal `.pas` to WebAssembly text-format `.wat` translator.
+This is an experimental Pascal `.pas` to WebAssembly text-format `.wat` compiler written in Rust.
+
+[Start here](https://github.com/michaelsjoeberg/pas2wat/blob/main/src/main.rs)
 
 ## TODO
 
@@ -15,44 +12,15 @@ This is an experimental Pascal `.pas` to WebAssembly text-format `.wat` translat
 - use func export for procedures (callable within module)
 - see data.wat and data.js for implementing string using memory
 
-## folder structure
-
-- src/
-    - main.rs
-        - [start here](https://github.com/michaelsjoeberg/pas2wat/blob/main/src/main.rs)
-    - config.rs
-        - configuration file
-        - settings for debugging
-    - const.rs
-        - constants used in other files (keywords, strings, opcodes, etc.)
-    - type.rs
-        - source code for type used in other files
-    - token.rs
-        - source code for token type used in other files
-    - lexer.rs
-        - source code for lexer
-    - ast.rs
-        - source code for AST data structure
-    - parser.rs
-        - source code for parser
-    - evaluator.rs
-        - source code for partial evaluator
-        - (could also be adapted to use as interpreter)
-    - emitter.rs
-        - source code for code generation
-
-- programs/
-    - Pascal programs for testing
-
 ## manual
 
-First, install both Rust and Cargo, the Rust package manager. If already installed, or after successful installation:
+Install Rust and Cargo, then:
 
 - `cargo test` to run unit tests
 
 - `cargo run <filename>.pas` to run the compiler with `<filename>.pas` as input, output is `<filename>.wat`
 
-The generated file is in WebAssembly text-format, which is enough for testing using the [wat2wasm online tool](https://webassembly.github.io/wabt/demo/wat2wasm/), could also use the WebAssembly Binary Toolkit to compile text-format (wat) into binary format (wasm):
+The generated file is in WebAssembly text-format, test using [wat2wasm online tool](https://webassembly.github.io/wabt/demo/wat2wasm/), or WebAssembly Binary Toolkit:
 
 - build the [WebAssembly Binary Toolkit](https://github.com/WebAssembly/wabt), make wat2wasm executable, and add to PATH, i.e. `export PATH=$PATH:/path/to/wat2wasm`
 
@@ -66,7 +34,7 @@ For example, to compile the file `test.pas` and view output in binary format:
 
 ## debugging
 
-The compiler can be configured to output additional information, such as tokens, AST, and symbol table:
+The compiler can be verbose:
 
 - set `DEBUG` as true to enter debug mode
 - set `DEBUG_WITH_INPUT` as true to instruct the compiler to look for input file (otherwise expecting call to functions)
@@ -77,6 +45,6 @@ The compiler can be configured to output additional information, such as tokens,
 - set `DEBUG_SHOW_SYMBOL_TABLE` as true to show the symbol table, which contains variable decalarations
 - set `DEBUG_SHOW_ASSIGNMENT_TABLE` as true to show the assignment table, which contains variable assignments used by the evaluator
 
-Other useful information:
+The compiler can generate verbose code:
 
 - set `OUTPUT_VERBOSE` as true to include compiler-related comments in the generated code, this does not include comments in the Pascal program (default is true)
