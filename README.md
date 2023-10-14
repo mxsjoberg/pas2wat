@@ -1,6 +1,6 @@
 ![pas2wat.png](pas2wat.png)
 
-# pas2wat: Pascal-to-WebAssembly text-format compiler in Rust
+# Pascal-to-WebAssembly text-format compiler in Rust
 
 This is an experimental Pascal `.pas` to WebAssembly text-format `.wat` compiler written in Rust.
 
