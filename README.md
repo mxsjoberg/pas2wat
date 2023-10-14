@@ -6,13 +6,13 @@ This is an experimental Pascal `.pas` to WebAssembly text-format `.wat` compiler
 
 [[start here](https://github.com/michaelsjoeberg/pas2wat/blob/main/src/main.rs)]
 
-## TODO
+## Todo
 
 - make SEMICOLON optional (no reason to require in input since omitted in webassembly)
 - use func export for procedures (callable within module)
 - see data.wat and data.js for implementing string using memory
 
-## manual
+## Usage
 
 Install Rust and Cargo, then:
 
@@ -32,7 +32,7 @@ For example, to compile the file `test.pas` and view output in binary format:
 
 - `cargo run test.pas; wat2wasm test.wat -v`
 
-## debugging
+## Debug
 
 The compiler can be verbose:
 
