@@ -4,7 +4,7 @@
 
 This is an experimental Pascal `.pas` to WebAssembly text-format `.wat` compiler written in Rust.
 
-[Start here](https://github.com/michaelsjoeberg/pas2wat/blob/main/src/main.rs)
+[[start here](https://github.com/michaelsjoeberg/pas2wat/blob/main/src/main.rs)]
 
 ## TODO
 
