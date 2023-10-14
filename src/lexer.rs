@@ -3,12 +3,6 @@ use crate::r#const::*;
 use crate::r#type::Type;
 use crate::token::Token;
 
-/*
-
-  TODO: add symbols (implemented and not)
-
-*/
-
 // lexer
 // ----------------------------------------------------
 pub struct Lexer {
@@ -365,7 +359,7 @@ impl Lexer {
           self.increment();
           return Token::LESS_THAN;
         },
-        _ => panic!(format!("{} : {}", _char.to_string(), PANIC_SYNTAX))
+        _ => panic!("{} : {}", _char.to_string(), PANIC_SYNTAX)
       }
     }
     // otherwise

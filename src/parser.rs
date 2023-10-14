@@ -7,42 +7,6 @@ use crate::ast::AST;
 use crate::evaluator::Evaluator;
 
 /*
-
-  TODO: update grammar to be more consistent and make improvements (no semicolon etc)
-
-  Subset of Standard Pascal
-
-  program                 : PROGRAM variable SEMICOLON block DOT
-
-  block                   : declarations compound_statement
-  compound_statement      : BEGIN statement_list END
-  statement_list          : statement (SEMICOLON statement)*
-  statement               : compound_statement | structured_statement | assignment_statement | function_statement | empty
-  structured_statement    : if_statement | while_statement
-
-  TODO if_statement            : IF condition THEN statement (ELSE statement)?
-  TODO while_statement         : WHILE condition DO statement
-  TODO function_statement      : (WRITELN) LPAR simple_expression RPAR
-
-  declarations            : CONST (constant_declaration SEMICOLON)+ | VAR (variable_declaration SEMICOLON)+ | empty
-  variable_declaration    : ID (COMMA ID)* COLON (type_spec | structured_type)
-  structured_type         : (PACKED)? (array_type)
-  array_type              : ARRAY LBRA RANGE (COMMA RANGE)* RBRA OF type_spec
-  type_spec               : INTEGER | REAL | BOOLEAN
-
-  assignment_statement    : variable ASSIGN (simple_expression | (TRUE | FALSE))
-  variable                : ID (LBRA simple_expression RBRA)?
-  
-  TODO condition               : (TRUE | FALSE) | ODD simple_expression | simple_expression (EQUAL | GREATER_THAN | GREATER_EQUAL | LESS_THAN | LESS_EQUAL | NOT_EQUAL) simple_expression
-  simple_expression       : term ((PLUS | MINUS) term)*
-
-  term                    : factor ((MULTIPLY | DIVIDE | INTEGER_DIV | INTEGER_MOD) factor)*
-  factor                  : PLUS factor | MINUS factor | INTEGER | REAL | LPAR expression RPAR | variable
-  empty                   : 
-
-*/
-
-/*
   
   program                 : PROGRAM variable SEMICOLON block DOT
 
@@ -104,7 +68,7 @@ impl Parser {
     if token == self.current_token.clone().unwrap() {
       self.current_token = Some(self.lexer.get_next_token());
     } else {
-      panic!(format!("{:?} : {}", token, PANIC_SYNTAX))
+      panic!("{:?} : {}", token, PANIC_SYNTAX)
     }
   }
   // type_spec : AST
@@ -124,7 +88,7 @@ impl Parser {
         self.eat(Token::TYPE_SPEC(Type::REAL));
         return AST::new(token, vec![]);
       },
-      _ => panic!(format!("{:?} : {}", token, PANIC_TYPE_DECLARATION))
+      _ => panic!("{:?} : {}", token, PANIC_TYPE_DECLARATION)
     }
   }
   // empty : AST
@@ -161,7 +125,7 @@ impl Parser {
         // otherwise
         return AST::new(Token::ID(string), vec![]);
       },
-      _ => panic!(format!("{:?} : {}", token, PANIC_SYNTAX))
+      _ => panic!("{:?} : {}", token, PANIC_SYNTAX)
     }
   }
   // array_type : AST
@@ -184,7 +148,7 @@ impl Parser {
             self.eat(Token::RANGE(_start, _end));
             ranges.push((_start, _end));
           },
-          _ => panic!(format!("{:?} : {}", token, PANIC_ARRAY))
+          _ => panic!("{:?} : {}", token, PANIC_ARRAY)
         }
         // (COMMA RANGE)*
         // while self.current_token == Some(Token::COMMA) {
@@ -211,7 +175,7 @@ impl Parser {
             Token::TYPE_SPEC(_type) => {
               self.symbol_table.push((_variable.token.clone(), _type.clone()));
             },
-            _ => panic!(format!("{:?} : {}", _variable, PANIC_SYNTAX))
+            _ => panic!("{:?} : {}", _variable, PANIC_SYNTAX)
           }
           // TODO: consider changing to dimensions or remove
           for range in &ranges {
@@ -223,14 +187,14 @@ impl Parser {
                   let index_id = AST::new(Token::ID(id), vec![index]);
                   node.children.push(index_id);
                 },
-                _ => panic!(format!("{:?} : {}", _variable, PANIC_SYNTAX))
+                _ => panic!("{:?} : {}", _variable, PANIC_SYNTAX)
               }
             }
           }
         }
         return node
       },
-      _ => panic!(format!("{:?} : {}", token, PANIC_SYNTAX))
+      _ => panic!("{:?} : {}", token, PANIC_SYNTAX)
     }
   }
   // structured_type : AST
@@ -247,7 +211,7 @@ impl Parser {
       Token::ARRAY => {
         return self.array_type(variable_nodes);
       },
-      _ => panic!(format!("{:?} : {}", token, PANIC_SYNTAX))
+      _ => panic!("{:?} : {}", token, PANIC_SYNTAX)
     }
   }
   // constant_declaration : AST
@@ -313,7 +277,7 @@ impl Parser {
       Token::PACKED | Token::ARRAY => {
         return self.structured_type(variable_nodes);
       },
-      _ => panic!(format!("{:?} : {}", token, PANIC_TYPE_DECLARATION))
+      _ => panic!("{:?} : {}", token, PANIC_TYPE_DECLARATION)
     }
   }
   // constant_declarations : AST
@@ -389,11 +353,11 @@ impl Parser {
             // new branch
             return AST::new(Token::ASSIGN, children);
           }
-          _ => panic!(format!("{:?} : {}", node.token, PANIC_SYNTAX))
+          _ => panic!("{:?} : {}", node.token, PANIC_SYNTAX)
         }
       }
     }
-    panic!(format!("{:?} : {}", node, PANIC_VAR_NOT_DECLARAED))
+    panic!("{:?} : {}", node, PANIC_VAR_NOT_DECLARAED)
   }
   // factor : AST
   fn factor(&mut self) -> AST {
@@ -471,7 +435,7 @@ impl Parser {
           let children: Vec<AST> = vec![node, self.factor()];
           node = AST::new(Token::INTEGER_MOD, children);
         },
-        _ => panic!(format!("{:?} : {}", self.current_token, PANIC_SYNTAX))
+        _ => panic!("{:?} : {}", self.current_token, PANIC_SYNTAX)
       }
     }
     return node;
@@ -498,7 +462,7 @@ impl Parser {
           // new branch
           node = AST::new(Token::MINUS, children);
         },
-        _ => panic!(format!("{:?} : {}", self.current_token, PANIC_SYNTAX))
+        _ => panic!("{:?} : {}", self.current_token, PANIC_SYNTAX)
       }
     }
     return node;
@@ -603,7 +567,7 @@ impl Parser {
         // self.result_type = true;
         return node
       }
-      _ => panic!(format!("{:?} : {}", self.current_token, PANIC_SYNTAX))
+      _ => panic!("{:?} : {}", self.current_token, PANIC_SYNTAX)
     }
   }
   // while_statement : AST
@@ -662,7 +626,7 @@ impl Parser {
       Token::WHILE => {
         return self.while_statement();
       },
-      _ => panic!(format!("{:?} : {}", self.current_token, PANIC_SYNTAX))
+      _ => panic!("{:?} : {}", self.current_token, PANIC_SYNTAX)
     }
   }
   // statement : AST
@@ -752,7 +716,7 @@ impl Parser {
     // start at program
     let node = self.program();
     if self.current_token != Some(Token::EOF) {
-      panic!(format!("{:?} : {}", self.current_token, PANIC_SYNTAX))
+      panic!("{:?} : {}", self.current_token, PANIC_SYNTAX)
     }
     return node;
   }
