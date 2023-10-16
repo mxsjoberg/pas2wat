@@ -1,7 +1,7 @@
 // #![allow(dead_code)]
 #![allow(non_camel_case_types)]
 #![allow(unused_variables)]
-#![allow(unused_assignments)]
+// #![allow(unused_assignments)]
 
 use std::env;
 use std::fs::{ self, File };
@@ -27,7 +27,6 @@ mod token;
 use crate::token::{ Token };
 
 fn main() {
-  // run compile on content in file
   if DEBUG && DEBUG_WITH_INPUT {
     let args: Vec<String> = env::args().collect();
     let mut source_file = String::new();
@@ -94,7 +93,6 @@ fn main() {
     let mut token = lexer.get_next_token();
     while token != Token::EOF {
       println!("{}{}{:?}", FORMAT_TAB, FORMAT_SPACE.repeat(2), token);
-      // increment
       token = lexer.get_next_token();
     };
   }
