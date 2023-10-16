@@ -1,7 +1,7 @@
 // #![allow(dead_code)]
 #![allow(non_camel_case_types)]
 #![allow(unused_variables)]
-// #![allow(unused_assignments)]
+#![allow(unused_assignments)]
 
 use std::env;
 use std::fs::{ self, File };
@@ -30,6 +30,9 @@ fn main() {
   if DEBUG && DEBUG_WITH_INPUT {
     let args: Vec<String> = env::args().collect();
     let mut source_file = String::new();
+
+    println!("{:?}", args);
+
     if args.len() as i32 > 1 {
       source_file = String::from(&args[1]);
       // file_name
