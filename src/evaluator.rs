@@ -5,7 +5,7 @@ use crate::ast::AST;
 // evaluator
 // ----------------------------------------------------
 pub struct Evaluator {
-  symbol_table: Vec<(Token, Type)>,
+  pub symbol_table: Vec<(Token, Type)>,
   assign_table: Vec<(Token, AST)>,
   // to track tokens
   tokens: Vec<Token>,
