@@ -2,6 +2,53 @@ use crate::config::*;
 use crate::consts::*;
 use crate::token::{ Type, Token };
 
+// characters
+const CHAR_DOT                  : char = '.';
+const CHAR_UNDERSCORE           : char = '_';
+const CHAR_COMMA                : char = ',';
+const CHAR_COLON                : char = ':';
+const CHAR_SEMICOLON            : char = ';';
+const CHAR_EQUAL                : char = '=';
+const CHAR_PLUS                 : char = '+';
+const CHAR_MINUS                : char = '-';
+const CHAR_MULTIPLY             : char = '*';
+const CHAR_DIVIDE               : char = '/';
+const CHAR_LPAR                 : char = '(';
+const CHAR_RPAR                 : char = ')';
+const CHAR_LBRA                 : char = '[';
+const CHAR_RBRA                 : char = ']';
+const CHAR_LCUR                 : char = '{';
+const CHAR_RCUR                 : char = '}';
+const CHAR_GREATER_THAN         : char = '>';
+const CHAR_LESS_THAN            : char = '<';
+const CHAR_NEWLINE              : char = '\n';
+// keywords
+const KEY_PROGRAM               : &str = "PROGRAM";
+const KEY_CONST                 : &str = "CONST";
+const KEY_VAR                   : &str = "VAR";
+const KEY_DIV                   : &str = "DIV";
+const KEY_MOD                   : &str = "MOD";
+const KEY_ODD                   : &str = "ODD";
+const KEY_BEGIN                 : &str = "BEGIN";
+const KEY_END                   : &str = "END";
+const KEY_INTEGER               : &str = "INTEGER";
+const KEY_LONGINT               : &str = "LONGINT";
+const KEY_SMALLINT              : &str = "SMALLINT";
+const KEY_REAL                  : &str = "REAL";
+const KEY_BOOLEAN               : &str = "BOOLEAN";
+const KEY_TRUE                  : &str = "TRUE";
+const KEY_FALSE                 : &str = "FALSE";
+const KEY_PACKED                : &str = "PACKED";
+const KEY_ARRAY                 : &str = "ARRAY";
+const KEY_OF                    : &str = "OF";
+const KEY_WHILE                 : &str = "WHILE";
+const KEY_DO                    : &str = "DO";
+const KEY_IF                    : &str = "IF";
+const KEY_THEN                  : &str = "THEN";
+const KEY_ELSE                  : &str = "ELSE";
+// functions
+const FUNC_WRITELN              : &str = "WRITELN";
+
 pub struct Lexer {
   text: String,
   position: i32,
@@ -10,7 +57,7 @@ pub struct Lexer {
 }
 
 impl Lexer {
-  // new : Lexer
+  // new -> Lexer
   pub fn new(text: String) -> Lexer {
     let mut lexer = Lexer {
       text: text,
@@ -23,12 +70,11 @@ impl Lexer {
     }
     return lexer;
   }
-  // look_ahead : Option<char>
+  // look_ahead -> Option<char>
   fn look_ahead(&mut self) -> Option<char> {
     // next position in text
     let next_position = self.position as i32 + 1;
     if next_position > self.text.len() as i32 - 1 {
-      // end of file
       return None;
     } else {
       return Some(self.text.as_bytes()[next_position as usize] as char);
