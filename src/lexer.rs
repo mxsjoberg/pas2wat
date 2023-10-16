@@ -1,5 +1,5 @@
 use crate::config::*;
-use crate::r#const::*;
+use crate::consts::*;
 use crate::token::{ Type, Token };
 
 // lexer

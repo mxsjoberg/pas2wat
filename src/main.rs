@@ -10,9 +10,9 @@ use std::io::prelude::*;
 
 // config
 mod config;
-mod r#const;
+mod consts;
 use crate::config::*;
-use crate::r#const::*;
+use crate::consts::*;
 // for testing
 use crate::token::{ Token };
 
