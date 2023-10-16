@@ -57,7 +57,7 @@ pub struct Lexer {
 }
 
 impl Lexer {
-  // new -> Lexer
+  // new(String) -> Lexer
   pub fn new(text: String) -> Lexer {
     let mut lexer = Lexer {
       text: text,
@@ -70,7 +70,7 @@ impl Lexer {
     }
     return lexer;
   }
-  // look_ahead -> Option<char>
+  // look_ahead() -> Option<char>
   fn look_ahead(&mut self) -> Option<char> {
     // next position in text
     let next_position = self.position as i32 + 1;
@@ -80,8 +80,8 @@ impl Lexer {
       return Some(self.text.as_bytes()[next_position as usize] as char);
     }
   }
-  // increment
-  fn increment(&mut self) {
+  // next_token
+  fn next_token(&mut self) {
     if DEBUG && DEBUG_SHOW_CHAR { println!("{}{}{:?}", FORMAT_TAB, FORMAT_SPACE.repeat(2), self.current_char); }
     self.position += 1;
     // no more text input
@@ -99,7 +99,7 @@ impl Lexer {
   fn skip_whitespace(&mut self) {
     while let Some(_char) = self.current_char {
       if _char.is_whitespace() {
-        self.increment();
+        self.next_token();
       } else {
         break;
       }
@@ -108,25 +108,25 @@ impl Lexer {
   // skip_comment
   fn skip_comment(&mut self) {
     if self.comment_multiline == true {
-      // increment until closing curly
+      // next_token until closing curly
       while let Some(_char) = self.current_char {
         if _char != CHAR_RCUR {
-          self.increment();
+          self.next_token();
         } else {
           self.comment_multiline = false;
           // closing curly brace
-          self.increment();
+          self.next_token();
           break;
         }
       }
     } else {
-      // increment until newline
+      // next_token until newline
       while let Some(_char) = self.current_char {
         if _char != CHAR_NEWLINE {
-          self.increment();
+          self.next_token();
         } else {
           // newline
-          // self.increment();
+          // self.next_token();
           break;
         }
       }
@@ -140,22 +140,22 @@ impl Lexer {
       if _char.is_digit(10) {
         // push to string
         string.push(_char);
-        self.increment();
+        self.next_token();
       } else {
         break;
       }
     }
     // two dots is range
     if self.current_char == Some(CHAR_DOT) && self.look_ahead() == Some(CHAR_DOT) {
-      self.increment();
-      self.increment();
+      self.next_token();
+      self.next_token();
       let mut end = String::new();
       while let Some(_char) = self.current_char {
         // check if char is digit
         if _char.is_digit(10) {
           // push to string
           end.push(_char);
-          self.increment();
+          self.next_token();
         } else {
           break;
         }
@@ -166,16 +166,16 @@ impl Lexer {
     if self.current_char == Some(CHAR_DOT) {
       // push to string
       string.push(CHAR_DOT);
-      // increment
-      self.increment();
-      // increment until not number
+      // next_token
+      self.next_token();
+      // next_token until not number
       while let Some(_char) = self.current_char {
         // check if char is digit
         if _char.is_digit(10) {
           // push to string
           string.push(_char);
-          // increment
-          self.increment();
+          // next_token
+          self.next_token();
         } else {
           break;
         }
@@ -192,7 +192,7 @@ impl Lexer {
       if _char.is_alphabetic() || _char.is_digit(10) || _char == CHAR_UNDERSCORE {
         // push to string
         string.push(_char);
-        self.increment();
+        self.next_token();
       } else {
         break;
       }
@@ -262,9 +262,6 @@ impl Lexer {
       KEY_DO => {
         return Token::DO;
       },
-      // KEY_BREAK => {
-      //     return Token::BREAK;
-      // },
       KEY_IF => {
         return Token::IF;
       },
@@ -293,13 +290,13 @@ impl Lexer {
       // comment multiline
       if _char == CHAR_LCUR {
         self.comment_multiline = true;
-        self.increment();
+        self.next_token();
         self.skip_comment();
         continue;
       }
       // comment
       if _char == CHAR_DIVIDE && self.look_ahead() == Some(CHAR_DIVIDE) {
-        self.increment();
+        self.next_token();
         self.skip_comment();
         continue; 
       }
@@ -314,41 +311,41 @@ impl Lexer {
       }
       // assignment
       if _char == CHAR_COLON && self.look_ahead() == Some(CHAR_EQUAL) {
-        self.increment();
-        self.increment();
+        self.next_token();
+        self.next_token();
         return Token::ASSIGN;
       }
       // not equal
       if _char == CHAR_LESS_THAN && self.look_ahead() == Some(CHAR_GREATER_THAN) {
-        self.increment();
-        self.increment();
+        self.next_token();
+        self.next_token();
         return Token::NOT_EQUAL;
       }
       // less than or equal
       if _char == CHAR_LESS_THAN && self.look_ahead() == Some(CHAR_EQUAL) {
-        self.increment();
-        self.increment();
+        self.next_token();
+        self.next_token();
         return Token::LESS_EQUAL;
       }
       // greater than or equal
       if _char == CHAR_GREATER_THAN && self.look_ahead() == Some(CHAR_EQUAL) {
-        self.increment();
-        self.increment();
+        self.next_token();
+        self.next_token();
         return Token::GREATER_EQUAL;
       }
       // colon
       if _char == CHAR_COLON {
-        self.increment();
+        self.next_token();
         return Token::COLON;
       }
       // semicolon
       if _char == CHAR_SEMICOLON {
-        self.increment();
+        self.next_token();
         return Token::SEMICOLON;
       }
       // comma
       if _char == CHAR_COMMA {
-        self.increment();
+        self.next_token();
         return Token::COMMA;
       }
       // dot
@@ -360,47 +357,47 @@ impl Lexer {
       // operators
       match _char {
         CHAR_PLUS => {
-          self.increment();
+          self.next_token();
           return Token::PLUS;
         },
         CHAR_MINUS => {
-          self.increment();
+          self.next_token();
           return Token::MINUS;
         },
         CHAR_MULTIPLY => {
-          self.increment();
+          self.next_token();
           return Token::MULTIPLY;
         },
         CHAR_DIVIDE => {
-          self.increment();
+          self.next_token();
           return Token::DIVIDE;
         },
         CHAR_LPAR => {
-          self.increment();
+          self.next_token();
           return Token::LPAR;
         },
         CHAR_RPAR => {
-          self.increment();
+          self.next_token();
           return Token::RPAR;
         },
         CHAR_LBRA => {
-          self.increment();
+          self.next_token();
           return Token::LBRA;
         },
         CHAR_RBRA => {
-          self.increment();
+          self.next_token();
           return Token::RBRA;
         },
         CHAR_EQUAL => {
-          self.increment();
+          self.next_token();
           return Token::EQUAL;
         },
         CHAR_GREATER_THAN => {
-          self.increment();
+          self.next_token();
           return Token::GREATER_THAN;
         },
         CHAR_LESS_THAN => {
-          self.increment();
+          self.next_token();
           return Token::LESS_THAN;
         },
         _ => panic!("{} : {}", _char.to_string(), PANIC_SYNTAX)
@@ -432,12 +429,12 @@ mod tests {
   }
 
   #[test]
-  fn increment() {
+  fn next_token() {
     let mut lexer = Lexer::new("42".to_string());
     assert_eq!(lexer.current_char, Some('4'));
-    lexer.increment();
+    lexer.next_token();
     assert_eq!(lexer.current_char, Some('2'));
-    lexer.increment();
+    lexer.next_token();
     assert_eq!(lexer.current_char, None);
   }
 
@@ -445,7 +442,7 @@ mod tests {
   fn skip_whitespace() {
     let mut lexer = Lexer::new("1  2".to_string());
     assert_eq!(lexer.current_char, Some('1'));
-    lexer.increment();
+    lexer.next_token();
     assert_eq!(lexer.current_char, Some(' '));
     lexer.skip_whitespace();
     assert_eq!(lexer.current_char, Some('2'));
