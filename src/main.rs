@@ -40,7 +40,7 @@ fn main() {
       match BufReader::new(File::open(source_file).expect(PANIC_READ)).read_to_string(&mut input) {
         Err(why) => panic!("{} : {}", PANIC_READ, why),
         Ok(_) => {
-          // target file (not required)
+          // target file (optional)
           let mut target_file = String::new();
           if args.len() as i32 > 2 {
               target_file = String::from(&args[2]);
