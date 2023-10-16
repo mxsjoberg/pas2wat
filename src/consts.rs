@@ -1,53 +1,6 @@
 // types
 pub static NTYPE_INTEGER            : &'static str = "i32";
 pub static NTYPE_REAL               : &'static str = "f64";
-// // characters
-// pub const CHAR_DOT                  : char = '.';
-// pub const CHAR_UNDERSCORE           : char = '_';
-// pub const CHAR_COMMA                : char = ',';
-// pub const CHAR_COLON                : char = ':';
-// pub const CHAR_SEMICOLON            : char = ';';
-// pub const CHAR_EQUAL                : char = '=';
-// pub const CHAR_PLUS                 : char = '+';
-// pub const CHAR_MINUS                : char = '-';
-// pub const CHAR_MULTIPLY             : char = '*';
-// pub const CHAR_DIVIDE               : char = '/';
-// pub const CHAR_LPAR                 : char = '(';
-// pub const CHAR_RPAR                 : char = ')';
-// pub const CHAR_LBRA                 : char = '[';
-// pub const CHAR_RBRA                 : char = ']';
-// pub const CHAR_LCUR                 : char = '{';
-// pub const CHAR_RCUR                 : char = '}';
-// pub const CHAR_GREATER_THAN         : char = '>';
-// pub const CHAR_LESS_THAN            : char = '<';
-// pub const CHAR_NEWLINE            	: char = '\n';
-// // keywords
-// pub const KEY_PROGRAM               : &str = "PROGRAM";
-// pub const KEY_CONST                 : &str = "CONST";
-// pub const KEY_VAR                   : &str = "VAR";
-// pub const KEY_DIV                   : &str = "DIV";
-// pub const KEY_MOD                   : &str = "MOD";
-// pub const KEY_ODD 					: &str = "ODD";
-// pub const KEY_BEGIN                 : &str = "BEGIN";
-// pub const KEY_END                   : &str = "END";
-// pub const KEY_INTEGER               : &str = "INTEGER";
-// pub const KEY_LONGINT               : &str = "LONGINT";
-// pub const KEY_SMALLINT              : &str = "SMALLINT";
-// pub const KEY_REAL                  : &str = "REAL";
-// pub const KEY_BOOLEAN               : &str = "BOOLEAN";
-// pub const KEY_TRUE                  : &str = "TRUE";
-// pub const KEY_FALSE                 : &str = "FALSE";
-// pub const KEY_PACKED                : &str = "PACKED";
-// pub const KEY_ARRAY                 : &str = "ARRAY";
-// pub const KEY_OF                    : &str = "OF";
-// pub const KEY_WHILE                 : &str = "WHILE";
-// pub const KEY_DO                    : &str = "DO";
-// //const KEY_BREAK                 : &str = "BREAK";
-// pub const KEY_IF                    : &str = "IF";
-// pub const KEY_THEN                  : &str = "THEN";
-// pub const KEY_ELSE                  : &str = "ELSE";
-// // functions
-// pub const FUNC_WRITELN              : &str = "WRITELN";
 // errors
 pub const PANIC_SYNTAX              : &str = "Invalid syntax";
 pub const PANIC_TYPE_DECLARATION    : &str = "Invalid type declaration";
@@ -58,7 +11,7 @@ pub const PANIC_WRITE               : &str = "Could not write to file";
 pub const PANIC_READ                : &str = "Could not read from file";
 pub const PANIC_FILE                : &str = "No source file provided";
 pub const PANIC_EVAL                : &str = "Could not evaluate";
-// format
+// formatting
 pub const FORMAT_SPACE              : &str = " ";
 pub const FORMAT_TAB                : &str = "  ";
 pub const FORMAT_NEWLINE            : &str = "\n";
@@ -86,7 +39,7 @@ pub const WASM_RESULT               : &str = "result";
 pub const WASM_EXPORT               : &str = "export";
 pub const WASM_FUNCTION             : &str = "func";
 pub const WASM_MODULE               : &str = "module";
-pub const WASM_WRITE				: &str = "call $log"; // TODO: generalise away from log
+pub const WASM_WRITE				: &str = "call $log"; // TODO: is there a better way?
 pub const WASM_BLOCK                : &str = "block";
 pub const WASM_LOOP                 : &str = "loop";
 pub const WASM_BREAK                : &str = "br";
@@ -94,6 +47,6 @@ pub const WASM_BREAK_IF             : &str = "br_if";
 pub const WASM_IF                   : &str = "if";
 pub const WASM_THEN                 : &str = "then";
 pub const WASM_ELSE                 : &str = "else";
-// files
+// misc
 pub const WASM_WAT                  : &str = ".wat";
 pub const WASM_JS                   : &str = ".js";
