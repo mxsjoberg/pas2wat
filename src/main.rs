@@ -1,4 +1,4 @@
-// #![allow(dead_code)]
+#![allow(dead_code)]
 #![allow(non_camel_case_types)]
 #![allow(unused_variables)]
 #![allow(unused_assignments)]
@@ -24,14 +24,14 @@ use crate::parser::Parser;
 
 // only need this for testing
 mod token;
-use crate::token::{ Token };
+// use crate::token::{ Token };
 
 fn main() {
   if DEBUG && DEBUG_WITH_INPUT {
     let args: Vec<String> = env::args().collect();
     let mut source_file = String::new();
 
-    println!("{:?}", args);
+    // println!("{:?}", args);
 
     if args.len() as i32 > 1 {
       source_file = String::from(&args[1]);
@@ -81,22 +81,17 @@ fn main() {
     }
   // run parts of compiler using custom input
   } else {
-    let mut lexer = Lexer::new("
-      PROGRAM test;
-      CONST
-        pi = 3.1415;
-      VAR
-        int: INTEGER;
-      BEGIN
-        IF true THEN
-          WRITELN(pi)
-        ELSE
-          WRITELN(0);
-      END.".to_string());
-    let mut token = lexer.get_next_token();
-    while token != Token::EOF {
-      println!("{}{}{:?}", FORMAT_TAB, FORMAT_SPACE.repeat(2), token);
-      token = lexer.get_next_token();
-    };
+    let lexer = Lexer::new("
+      test := 42;
+    ".to_string());
+    // let mut token = lexer.get_next_token();
+    // while token != Token::EOF {
+    //   println!("{}{}{:?}", FORMAT_TAB, FORMAT_SPACE.repeat(2), token);
+    //   token = lexer.get_next_token();
+    // };
+    let tree = Parser::new(lexer).parse();
+
+    println!("{:?}", tree);
+    // AST { token: ASSIGN, children: [AST { token: ID("test"), children: [] }, AST { token: INTEGER(42), children: [] }] }
   }
 }
