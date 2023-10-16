@@ -6,7 +6,7 @@ use crate::ast::AST;
 use crate::evaluator::Evaluator;
 
 /*
-  
+
   program                 : PROGRAM variable SEMICOLON block DOT
 
   block                   : declarations compound_statement
@@ -38,15 +38,36 @@ use crate::evaluator::Evaluator;
 
 */
 
-// parser
-// ----------------------------------------------------
+/*
+
+  TODO: replace subset of pascal with PL/0 grammar
+
+  program       = { statement };
+  statement     = assign_stmt | input_stmt | output_stmt | if_stmt | while_stmt ;
+  assign_stmt   = identifier ':=' expr ';';
+  input_stmt    = '?' identifier ';';
+  output_stmt   = '!' expr ';';
+
+  if_stmt       = 'if' condition ('then' | '{') statement ('end' | '}');
+  while_stmt    = 'while' condition ('do' | '{') statement ('end' | '}');
+
+  condition     = cond_odd | cond_expr;
+  cond_odd      = 'odd' expr;
+  cond_expr     = expr ('=' | '<' | '>') expr;
+
+  expr          = term {('+' | '-') term};
+  term          = factor {('*' | '/') factor};
+  factor        = identifier | number | '(' expr ')';
+
+*/
+
 pub struct Parser {
   lexer: Lexer,
   pub current_token: Option<Token>,
   pub symbol_table: Vec<(Token, Type)>,
   pub assign_table: Vec<(Token, AST)>,
-  // pub result_type: bool,
 }
+
 impl Parser {
   // new : Parser
   pub fn new(lexer: Lexer) -> Parser {
@@ -55,7 +76,6 @@ impl Parser {
       current_token: None,
       symbol_table: vec![],
       assign_table: vec![],
-      // result_type: false,
     };
     parser.current_token = Some(parser.lexer.get_next_token());
     return parser
