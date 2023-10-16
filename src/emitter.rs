@@ -1,5 +1,5 @@
 use std::fs::File;
-use std::io::{BufWriter, Write};
+use std::io::{ BufWriter, Write };
 
 use crate::config::*;
 use crate::consts::*;
@@ -7,14 +7,13 @@ use crate::token::{ Type, Token };
 use crate::ast::AST;
 use crate::parser::Parser;
 
-// emitter
-// ----------------------------------------------------
 pub struct Emitter {
   parser: Parser,
   file: BufWriter<File>,
   tab_pos: i32,
   require_i32: bool,
 }
+
 impl Emitter {
   // new : Emitter
   pub fn new(parser: Parser, file: BufWriter<File>) -> Emitter {
@@ -589,4 +588,3 @@ impl Emitter {
     self.visit(&tree);
   }
 }
-// ----------------------------------------------------
