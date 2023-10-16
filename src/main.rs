@@ -26,8 +26,6 @@ use crate::parser::Parser;
 mod token;
 use crate::token::{ Token };
 
-// main
-// ----------------------------------------------------
 fn main() {
   // run compile on content in file
   if DEBUG && DEBUG_WITH_INPUT {
@@ -101,4 +99,3 @@ fn main() {
     };
   }
 }
-// ----------------------------------------------------
