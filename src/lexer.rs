@@ -2,14 +2,13 @@ use crate::config::*;
 use crate::consts::*;
 use crate::token::{ Type, Token };
 
-// lexer
-// ----------------------------------------------------
 pub struct Lexer {
   text: String,
   position: i32,
   current_char: Option<char>,
   comment_multiline: bool,
 }
+
 impl Lexer {
   // new : Lexer
   pub fn new(text: String) -> Lexer {
@@ -365,11 +364,10 @@ impl Lexer {
     Token::EOF
   }
 }
-// ----------------------------------------------------
+
 #[cfg(test)]
 mod tests {
   use super::*;
-  // unit tests
   #[test]
   fn new() {
     let lexer = Lexer::new("42".to_string());
