@@ -1,4 +1,4 @@
-#![allow(dead_code)]
+// #![allow(dead_code)]
 #![allow(non_camel_case_types)]
 #![allow(unused_variables)]
 #![allow(unused_assignments)]
@@ -8,25 +8,23 @@ use std::fs::{self, File};
 use std::io::{BufReader, BufWriter, Write};
 use std::io::prelude::*;
 
-// config
+mod ast;
 mod config;
 mod consts;
+mod emitter;
+mod evaluator;
+mod lexer;
+mod parser;
+
 use crate::config::*;
 use crate::consts::*;
-// for testing
-use crate::token::{ Token };
-
-// compiler parts
-mod token;
-mod lexer;
-mod ast;
-mod evaluator;
-mod parser;
-mod emitter;
-
+use crate::emitter::Emitter;
 use crate::lexer::Lexer;
 use crate::parser::Parser;
-use crate::emitter::Emitter;
+
+// only need this for testing
+mod token;
+use crate::token::{ Token };
 
 // main
 // ----------------------------------------------------
