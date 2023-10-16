@@ -14,10 +14,9 @@ mod r#const;
 use crate::config::*;
 use crate::r#const::*;
 // for testing
-use crate::token::Token;
+use crate::token::{ Token };
 
 // compiler parts
-mod r#type;
 mod token;
 mod lexer;
 mod ast;

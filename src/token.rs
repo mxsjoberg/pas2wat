@@ -1,4 +1,9 @@
-use crate::r#type::Type;
+#[derive(Clone, Debug, PartialEq)]
+pub enum Type {
+  INTEGER,
+  REAL,
+  BOOLEAN,
+}
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum Token {
