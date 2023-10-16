@@ -4,8 +4,8 @@
 #![allow(unused_assignments)]
 
 use std::env;
-use std::fs::{self, File};
-use std::io::{BufReader, BufWriter, Write};
+use std::fs::{ self, File };
+use std::io::{ BufReader, BufWriter, Write };
 use std::io::prelude::*;
 
 mod ast;
