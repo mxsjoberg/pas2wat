@@ -414,6 +414,7 @@ impl Lexer {
 #[cfg(test)]
 mod tests {
   use super::*;
+  
   #[test]
   fn new() {
     let lexer = Lexer::new("42".to_string());
@@ -421,6 +422,7 @@ mod tests {
     assert_eq!(lexer.position, 0);
     assert_eq!(lexer.current_char, Some('4'));
   }
+
   #[test]
   fn look_ahead() {
     let mut lexer = Lexer::new("42".to_string());
@@ -428,6 +430,7 @@ mod tests {
     let mut lexer = Lexer::new("1".to_string());
     assert_eq!(lexer.look_ahead(), None);
   }
+
   #[test]
   fn increment() {
     let mut lexer = Lexer::new("42".to_string());
@@ -437,6 +440,7 @@ mod tests {
     lexer.increment();
     assert_eq!(lexer.current_char, None);
   }
+
   #[test]
   fn skip_whitespace() {
     let mut lexer = Lexer::new("1  2".to_string());
@@ -446,6 +450,7 @@ mod tests {
     lexer.skip_whitespace();
     assert_eq!(lexer.current_char, Some('2'));
   }
+
   #[test]
   fn skip_comment() {
     let mut lexer = Lexer::new("{ 2 }".to_string());
@@ -453,6 +458,7 @@ mod tests {
     lexer.skip_comment();
     assert_eq!(lexer.current_char, None);
   }
+
   #[test]
   fn number() {
     let mut lexer = Lexer::new("42".to_string());
@@ -462,6 +468,7 @@ mod tests {
     let mut lexer = Lexer::new("4..2".to_string());
     assert_eq!(lexer.number(), Token::RANGE(4, 2));
   }
+
   #[test]
   fn id() {
     let mut lexer = Lexer::new("PROGRAM".to_string());
@@ -513,6 +520,7 @@ mod tests {
     let mut lexer = Lexer::new("variable".to_string());
     assert_eq!(lexer.id(), Token::ID("variable".to_string()));
   }
+  
   #[test]
   fn get_next_token() {
     let mut lexer = Lexer::new("-(10 + (2 * 3))".to_string());
@@ -527,7 +535,7 @@ mod tests {
     assert_eq!(lexer.get_next_token(), Token::RPAR);
     assert_eq!(lexer.get_next_token(), Token::RPAR);
   }
-  // functional tests
+
   #[test]
   fn type_declaration() {
     let mut lexer = Lexer::new("first, second, third: INTEGER;".to_string());
@@ -545,6 +553,7 @@ mod tests {
     assert_eq!(lexer.get_next_token(), Token::TYPE_SPEC(Type::BOOLEAN));
     assert_eq!(lexer.get_next_token(), Token::SEMICOLON);
   }
+
   #[test]
   fn variable_assignment() {
     let mut lexer = Lexer::new("number := 42;".to_string());
