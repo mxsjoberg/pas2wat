@@ -7,7 +7,7 @@ pub enum Type {
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum Token {
-  BOF,
+  // BOF,
   TYPE_SPEC(Type),
   INTEGER(i32),
   REAL(f64),
