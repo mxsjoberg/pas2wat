@@ -2,17 +2,14 @@ use crate::consts::*;
 use crate::token::{ Type, Token };
 use crate::ast::AST;
 
-// evaluator
-// ----------------------------------------------------
 pub struct Evaluator {
   pub symbol_table: Vec<(Token, Type)>,
   assign_table: Vec<(Token, AST)>,
-  // to track tokens
   tokens: Vec<Token>,
 }
 
 impl Evaluator {
-  // new : Evaluator
+  // new() -> Evaluator
   pub fn new(symbol_table: Vec<(Token, Type)>, assign_table: Vec<(Token, AST)>) -> Evaluator {
     let evaluator = Evaluator {
       symbol_table: symbol_table,
@@ -52,14 +49,18 @@ impl Evaluator {
         self.tokens.push(node.token.clone());
         return left_value * right_value;
       },
-      Token::DIVIDE | Token::INTEGER_DIV => {
+      // Token::DIVIDE | Token::INTEGER_DIV => {
+      //   self.tokens.push(node.token.clone());
+      //   return left_value / right_value;
+      // },
+      Token::DIVIDE => {
         self.tokens.push(node.token.clone());
         return left_value / right_value;
-      },
-      Token::INTEGER_MOD => {
-        self.tokens.push(node.token.clone());
-        return left_value % right_value;
-      },
+      }
+      // Token::INTEGER_MOD => {
+      //   self.tokens.push(node.token.clone());
+      //   return left_value % right_value;
+      // },
       _ => panic!("{} : {:?}", PANIC_EVAL, node)
     }
   }
@@ -69,7 +70,7 @@ impl Evaluator {
       Token::INTEGER(_) | Token::REAL(_) => {
         return self.eval_number(node);
       },
-      Token::PLUS | Token::MINUS | Token::MULTIPLY | Token::DIVIDE | Token::INTEGER_DIV | Token::INTEGER_MOD => {
+      Token::PLUS | Token::MINUS | Token::MULTIPLY | Token::DIVIDE => {
         return self.eval_binary_operator(node);
       },
       Token::ID(_string) => {
